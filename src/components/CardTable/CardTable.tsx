@@ -26,6 +26,24 @@ export function CardTable({ cards }: CardTableProps) {
     setDialogOpen(true);
   };
 
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof Card;
+    direction: 'asc' | 'desc';
+  }>({
+    key: 'name',
+    direction: 'asc',
+  });
+
+  const sortedCards = [...cards].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
+
   return (
     <>
       <div className="rounded-md border">
@@ -42,7 +60,7 @@ export function CardTable({ cards }: CardTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {cards.map((card) => (
+            {sortedCards.map((card) => (
               <TableRow
                 key={card.id}
                 className="cursor-pointer hover:bg-muted/50"
