@@ -7,22 +7,17 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required for deployment to GitHub Pages
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4 # Updated from v2
       
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4 # Updated from v2
         with:
           node-version: '18'
+          cache: 'npm' # Built-in caching functionality
           
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-            
       - name: Install Dependencies
         run: npm ci
         
@@ -32,8 +27,8 @@ jobs:
           NODE_ENV: production
         
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.5
+        uses: JamesIves/github-pages-deploy-action@v4 # Updated to v4
         with:
           branch: gh-pages
           folder: dist
-          clean: true # Automatically remove deleted files from the deploy branch
+          clean: true
