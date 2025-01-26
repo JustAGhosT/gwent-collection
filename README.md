@@ -1,2 +1,1 @@
-# gwent-collection
-A repository for Gwent collection tracker
+This repository is empty. Any task executed on it should be considered a new capability and needs to be created.
